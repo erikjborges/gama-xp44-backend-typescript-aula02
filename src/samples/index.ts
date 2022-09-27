@@ -41,7 +41,8 @@ interface Animal extends SerVivo {
 const criaSerVivo = (nome: string, idade: number): SerVivo => {
     return {
         nome: nome,
-        idade: idade
+        idade: idade,
+        morre: () => {}
     };
 }
 
@@ -89,3 +90,144 @@ class Ser implements SerVivo {
         this.dtObito = data;
     }
 }
+
+// const ser = new Ser('batata', 12);
+// ser.morre(new Date());
+
+// class SerAnimal implements Animal {
+//     nome: string;
+//     idade: number;
+//     dtObito?: Date;
+//     peso: number;
+
+//     constructor(serVivo: SerVivo, peso: number){
+//         this.nome = serVivo.nome;
+//         this.idade = serVivo.idade;
+//         this.peso = peso;
+//     }
+
+//     morre(data: Date): void {
+//         this.dtObito = data;
+//     }
+// }
+
+// class SerVegetal implements Vegetal {
+//     nome: string;
+//     idade: number;
+//     dtObito?: Date;
+//     localizacao: Localizacao;
+
+//     constructor(serVivo: SerVivo, localizacao: Localizacao){
+//         this.nome = serVivo.nome;
+//         this.idade = serVivo.idade;
+//         this.localizacao = localizacao;
+//     }
+
+//     morre(data: Date): void {
+//         this.dtObito = data;
+//     }
+// }
+
+// const serGato = new Ser('gato', 1);
+// const gato = new SerAnimal(serGato, 5);
+
+// const serRosa = new Ser('rosa', 1);
+// const rosa = new SerVegetal(serRosa, { latitude: 19, longitude: 43.000 });
+
+// gato.morre(new Date());
+// rosa.morre(new Date());
+
+// console.log(gato);
+// console.log(rosa);
+
+/**
+ * Herança
+ */
+class SerAnimal1 extends Ser implements Animal {
+    peso: number;
+
+    constructor(nome: string, idade: number, peso: number) {
+        super(nome, idade);
+        this.peso = peso;
+    }
+}
+
+class SerVegetal1 extends Ser implements Vegetal {
+    localizacao: Localizacao;
+
+    constructor(nome: string, idade: number, localizacao: Localizacao) {
+        super(nome, idade);
+        this.localizacao = localizacao;
+    }
+}
+
+const galinha = new SerAnimal1('galinha', 1, 2);
+const camara = new SerVegetal1('camara', 2, { latitude: 19.000, longitude: 43.000 });
+
+galinha.morre(new Date());
+camara.morre(new Date());
+
+console.log(galinha);
+console.log(camara);
+
+/**
+ * Modificadores de acesso
+ */
+interface SerVivo2{
+    morre(data: Date): void
+}
+
+interface Vegetal2 extends SerVivo2 {
+    localizacao: Localizacao
+}
+
+interface Animal2 extends SerVivo2 {
+    peso: number
+}
+
+class Ser2 implements SerVivo2 {
+    private nome: string;
+    dtObito?: Date;
+
+    constructor(nome: string, protected idade: number){
+        this.nome = nome;
+    }
+
+    morre(data: Date): void {
+        this.dtObito = data;
+    }
+
+    mudaNome(nome: string){
+        this.nome = nome;
+    }
+}
+
+class SerAnimal2 extends Ser2 implements Animal2 {
+    peso: number;
+
+    constructor(nome: string, idade: number, peso: number){
+        super(nome, idade);
+        this.peso = peso;
+    }
+}
+
+class SerVegetal2 extends Ser2 implements Vegetal2 {
+    localizacao: Localizacao;
+
+    constructor(nome: string, idade: number, localizacao: Localizacao){
+        super(nome, idade);
+        this.localizacao = localizacao;
+    }
+}
+
+const zebra = new SerAnimal2('zebra', 10, 200);
+const mangueira = new SerVegetal2('mangueira', 20, { latitude: 19.000, longitude: 43.000 });
+
+zebra.mudaNome('cavalo'); 
+
+zebra.morre(new Date());
+mangueira.morre(new Date());
+
+console.log(zebra);
+console.log(mangueira);
+
